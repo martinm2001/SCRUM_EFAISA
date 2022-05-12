@@ -22,7 +22,7 @@ app.use(
 app.use(express.json());
 app.use(timeout("15s"));
 
-//const inout = require("./routes/inout");
+const inout = require("./routes/inout");
 const eventos = require("./routes/eventos");
 const serial = require("./routes/serial");
 const robo = require("./routes/robo");
@@ -34,7 +34,7 @@ const dispositivo = require("./routes/dispositivo");
 const extintores = require("./routes/extintores");
 const mangueras = require("./routes/magueras");
 
-//app.use("/api/inout", inout);
+app.use("/api/inout", inout);
 app.use("/api/eventos", eventos);
 app.use("/api/serial", serial);
 app.use("/api/robo", robo);
