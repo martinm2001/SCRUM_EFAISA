@@ -1,0 +1,859 @@
+html {
+    font-size: 62.5%;
+    /* Reset para REAMS - 62.5% = 10px de 16px*/
+    font-family: Arial;
+}
+
+body {
+
+    background-color: whitesmoke;
+}
+
+html,
+body,
+div,
+iframe {
+    margin: 0;
+    padding: 0;
+    border: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+a:hover {
+    text-decoration: none;
+}
+
+footer {
+    position: fixed;
+    width: auto;
+    bottom: 0;
+    right: 0;
+}
+
+#tituloAlertas {
+    color: #FE001A;
+    text-shadow: 1px 1px 2px white;
+}
+
+/* Barras alertas */
+div.alert {
+    font-size: 2rem;
+    text-align: left;
+    height: auto;
+    display: flow-root;
+}
+
+
+div.alert.alert-danger a.hreflinea {
+    text-decoration: none;
+    color: #721c24;
+    display: inline-block;
+}
+
+div.alert.alert-warning a.hreflinea {
+    text-decoration: none;
+    color: #856404;
+    display: inline-block;
+}
+
+div.alert.alert-success a.hreflinea {
+    text-decoration: none;
+    color: #155724;
+    display: inline-block;
+}
+
+div.alert.alert-info a.hreflinea {
+    text-decoration: none;
+    display: inline-block;
+}
+
+
+
+div.alert.alert-danger img.float-start.tamano36 {
+    margin: 0.5rem;
+}
+
+div.alert.alert-warning img.float-start.tamano36 {
+    margin: 0.5rem;
+}
+
+div.alert.alert-success img.float-start.tamano36 {
+    margin: 0.5rem;
+}
+
+img.iconoAdicional {
+    width: auto;
+    height: 3.6rem;
+    margin: 0.5rem;
+}
+
+/* Informacion lineas*/
+.botonconfigen {
+    background-color: #f8f9fa;
+    margin: 0.1rem;
+    border: 0.3rem solid black;
+    border-radius: 0.9rem;
+    font-size: 3rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: auto;
+    width: auto;
+    margin: 0.3rem;
+}
+
+.botonconfigen img {
+    margin: 0.3rem;
+    height: 4.55rem;
+    width: 4.55rem;
+}
+
+.botonconfigen p {
+    margin: 0.3rem;
+    height: 4.55rem;
+    width: 4.55rem;
+}
+
+.textareafomulario {
+    font-size: 1.5rem;
+    height: 80rem;
+    width: 90%;
+    resize: none;
+}
+
+.listaformulario {
+    font-size: 3rem;
+    height: 4.5rem;
+    width: auto;
+}
+
+.inputfomulario {
+    font-size: 3rem;
+    height: auto;
+    width: auto;
+}
+
+.input-group {
+    display: inline-flex;
+    width: auto;
+}
+
+.botonformulario {
+    border-color: black;
+    border-width: 3px;
+    font-size: 3rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.botonformulario img {
+    margin-right: 10px;
+}
+
+.radioformulario {
+    margin: 0.5rem;
+    font-size: 3rem;
+}
+
+.radioformulario input {
+    height: 2rem;
+    width: 2rem;
+}
+
+.cartelinfoform {
+    display: inline-block;
+    margin: 0.6rem;
+}
+
+.letrasinfolinea h3 {
+    color: black;
+}
+
+.headerConfig {
+    display: block;
+    color: black;
+}
+
+.imgHeaderConfig{
+    height: 8.6rem;
+    width: auto;
+}
+
+/* Informacion lineas*/
+.botonconfig {
+    margin: 0.1rem;
+    border: 0.3rem solid black;
+    border-radius: 0.9rem;
+    font-size: 3rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 7.1rem;
+    width: 33.5rem;
+}
+
+.botonconfig img {
+    margin: 0.3rem;
+
+}
+
+.botonconfig i {
+    margin: 0.3rem;
+
+}
+
+/*selectorIN*/
+.botonconfigIN {
+    margin: 0.1rem;
+    border: 0.3rem solid black;
+    border-radius: 0.9rem;
+    font-size: 3rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 7.6rem;
+    width: 24.5rem;
+}
+
+.botonconfigIN img {
+    margin: 0.3rem;
+
+}
+
+.botonconfigIN i {
+    margin: 0.3rem;
+
+}
+
+/*carga imagenes*/
+#preview {
+    border: 1px solid #ddd;
+    padding: 5px;
+    border-radius: 2px;
+    background: #fff;
+    max-width: 60rem;
+    max-height: 25rem;
+    height: 25rem;
+    width: 60rem;
+
+
+}
+
+#preview img {
+    width: 30rem;
+    height: 25rem;
+    display: block;
+    padding: 1rem;
+}
+
+.imgfileimput {
+    height: calc(1.5em + 1rem + 2px);
+    padding: .5rem 1rem;
+    font-size: 2.50rem;
+    line-height: 1.5;
+    border-radius: .3rem;
+}
+
+.recuadroImagen {
+    border: 0.1rem solid black;
+    background-color: white;
+    width: 65rem;
+    height: 40rem;
+}
+
+/*carga imagenes*/
+
+
+h1 {
+    font-size: 9rem;
+}
+
+h2 {
+    font-size: 8rem;
+}
+
+h3 {
+    font-size: 7.6rem;
+}
+
+h4 {
+    font-size: 3.5rem;
+}
+
+p {
+    font-size: 2rem;
+    color: black;
+}
+
+.contprinc {
+    position: fixed;
+    width: 100%;
+    border: none;
+    height: 96%;
+}
+
+.contprinc.status {
+    overflow-y: scroll;
+}
+
+.descgral {
+    display: block;
+    position: relative;
+    width: 100%;
+    border: none;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    height: 75%;
+}
+
+.descgral p {
+    display: block;
+    color: black;
+}
+
+.recuadrosbotones td {
+    border: 0.1rem solid transparent;
+}
+
+.recuadrosbotones div {
+    border: 0.1rem solid transparent;
+}
+
+.recuadrosbotones a {
+    display: inline-flex;
+}
+
+img.img-fluid {
+    padding: 0.5rem;
+}
+
+.tamano36 {
+    height: 4.6rem;
+    width: auto;
+}
+
+.nombreOrg {
+    display: inline-block;
+    color: #FE001A;
+    font-size: 3rem;
+    font-weight: bold;
+}
+
+.numnivacc {
+    color: black;
+    line-height: 4rem;
+    font-size: 5rem;
+    font-style: bold;
+}
+
+.reloj {
+    line-height: 4rem;
+    font-size: 5rem;
+    font-weight: bold;
+}
+
+/*vista image*/
+.contenedorImagen {
+    /*16:9*/
+    display: flex;
+    position: relative;
+    background-color: #f8f9fa;
+    width: 100%;
+    height: 100%;
+    margin: 0.5rem;
+    border: 0.3rem solid black;
+    border-radius: 0.9rem;
+    overflow: hidden;
+    justify-content: center;
+}
+
+.contenedorImagen div img {
+    height: 100%;
+    width: 100%;
+}
+
+.contenedorImagen iframe {
+    height: 100%;
+    width: 100%;
+}
+
+.descinfolinea {
+    display: block;
+    color: black;
+}
+
+#preview {
+    height: 82%;
+}
+
+.textoImagen {
+    position: absolute;
+    visibility: visible;
+    z-index: 1;
+    color: lightgray;
+    font-size: 1.5rem;
+}
+
+.elementoSobreImagen {
+    width: 75px;
+    height: auto;
+}
+
+.listadoext {
+    display: inline-block;
+    position: absolute;
+    right: 25%;
+    top: 0%;
+
+}
+
+.tabla {
+    border: 1px solid black;
+    width: auto;
+}
+
+.tablaout {
+    display: block;
+    height: 77%;
+    overflow-y: scroll
+}
+
+.nrotabla {
+    width: 12rem;
+}
+
+.datetabla {
+    width: 29rem;
+}
+
+.nombretabla {
+    width: 40rem;
+}
+
+.idtabla {
+    width: 8rem;
+}
+
+.tipotabla {
+    width: 12rem;
+}
+
+.fechatabla {
+    width: 20rem;
+}
+
+.tipoElemento a {
+    font-size: 2rem;
+    color: black;
+}
+
+.botonConfigLista {
+    margin: 0.1rem;
+    border: 0.3rem solid black;
+    border-radius: 0.9rem;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    height: 7.6rem;
+    width: -webkit-fill-available;
+}
+.botonConfigLista p{
+    font-size: 3rem;
+}
+
+.botonConfigLista img {
+    margin: 0.5rem;
+}
+
+
+.numTeclado {
+    display: block;
+    background-color: #f8f9fa;
+    border: 0.3rem solid black;
+    padding: 1.5rem 3rem;
+    font-size: 3.75rem;
+    color: black;
+    line-height: 4.5rem;
+    border-radius: 0.9rem;
+    margin: 0.2rem;
+}
+
+.numTeclado:hover {
+    color: black;
+    text-decoration: none;
+}
+
+.textareaTeclado {
+    font-size: 3.75rem;
+    width: 100%;
+    height: 7.5rem;
+    resize: none;
+    overflow-y: hidden;
+}
+
+.numTeclado img {
+    height: 3.2rem;
+    width: 3.2rem;
+}
+
+.contTeclado {
+    height: 43rem;
+    width: 39rem;
+}
+
+/* The Modal (background) */
+.modal {
+    display: none;
+    /* Hidden by default */
+    position: fixed;
+    /* Stay in place */
+    z-index: 1;
+    /* Sit on top */
+    padding-top: 100px;
+    /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%;
+    /* Full width */
+    height: 100%;
+    /* Full height */
+    overflow: auto;
+    /* Enable scroll if needed */
+    background-color: rgb(0, 0, 0);
+    /* Fallback color */
+    background-color: rgba(0, 0, 0, 0.4);
+    /* Black w/ opacity */
+}
+
+/* Modal Content */
+.modal-content {
+    display: table;
+    margin: auto;
+    padding: 2rem;
+    border: 0.1rem solid black;
+    width: auto;
+    border-radius: 0.9rem;
+}
+
+#botonConf {
+    display: none;
+}
+
+#botonCom {
+    display: none;
+}
+
+.barraestado {
+    background-color: whitesmoke;
+    padding: 0;
+}
+
+.contenedorprinc {
+    position: relative;
+    height: 75%;
+    margin-right: 1rem;
+    margin-left: 1rem;
+}
+
+.contenedorprinc.infoIN {
+    display: block;
+    height: 70%;
+    width: 100%;
+}
+
+.contenedorprinc.extintorManguera {
+    display: block;
+    height: 75%;
+    width: 100%;
+    overflow-y: scroll;
+}
+
+.contenedorprinc.infoIN.imagen {
+    display: flex;
+    height: 70%;
+    width: 100%;
+}
+
+.contenedorprinc.infoIN.imagenamp {
+    display: flex;
+    height: 80%;
+    width: 100%;
+}
+
+.contenedorprinc.config {
+    display: flow-root;
+    position: unset;
+    overflow-y: scroll;
+}
+
+.contenedorprinc.config.contReporte {
+    width: auto;
+    overflow-y: scroll;
+    overflow-x: hidden;
+}
+
+.botonAmpliar {
+    position: absolute;
+    right: 1rem;
+    top: 1rem;
+}
+
+@media screen and (max-width:1366px) {
+
+    @media screen and (max-height:657px) {
+        p {
+            font-size: 1.5rem;
+        }
+
+        .descgral {
+            height: 61%;
+        }
+
+        .contprinc {
+            height: 93%;
+        }
+
+        .contenedorprinc.infoIN.imagen {
+            height: 65%;
+        }
+
+        .contenedorprinc.infoIN.imagenamp {
+            height: 75%;
+        }
+
+        .contenedorprinc.extintorManguera {
+            height: 70%;
+        }
+    }
+}
+
+@media screen and (max-width:1020px) {
+    .numTeclado {
+        padding: 1.5rem 3rem;
+        font-size: 2.75rem;
+        line-height: 3.5rem;
+    }
+
+    .textareaTeclado {
+        height: 5.5rem;
+    }
+
+    .numTeclado img {
+        height: 2.2rem;
+        width: 2.2rem;
+    }
+
+    .contTeclado {
+        height: 37rem;
+        width: 36rem;
+    }
+}
+
+@media screen and (max-width:812px) {
+    h1 {
+        font-size: 6rem;
+    }
+
+    h2 {
+        font-size: 5rem;
+    }
+
+    h3 {
+        font-size: 4.6rem;
+    }
+
+    h4 {
+        font-size: 2.5rem;
+    }
+
+    p {
+        font-size: 1.25rem;
+    }
+
+    /*vista imagen*/
+    .botonconfigen {
+        font-size: 0rem;
+        padding: 0.7rem;
+    }
+
+    .botonconfigen img {
+        margin: 0rem;
+    }
+
+    .botonconfigen p {
+        margin: 0rem;
+    }
+
+    .descinfolinea {
+        font-size: xx-large;
+    }
+
+    .letrasinfolinea {
+        display: none;
+    }
+
+    .headerConfig {
+        display: block;
+    }
+    .imgHeaderConfig{
+        height: 5.6rem;
+        width: auto;
+    }
+
+    .nombreOrg {
+        font-size: 2rem;
+    }
+
+    .numnivacc {
+        font-size: 4rem;
+    }
+
+    .reloj {
+        display: none;
+        font-size: 4rem;
+    }
+
+    .tamano36 {
+        height: 4.04rem;
+        width: auto;
+    }
+
+    .numTeclado {
+        padding: 0rem 2rem;
+        line-height: 3rem;
+    }
+
+    .contTeclado {
+        height: 29rem;
+        width: 28rem;
+    }
+
+    .botonconfigen {
+        padding: 0.1rem;
+
+    }
+
+    .botonconfigen img {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .botonconfigen p {
+        width: 3rem;
+        height: 3rem;
+    }
+
+    .textareaTeclado {
+        height: 3rem;
+        font-size: 1.75rem;
+    }
+
+    .contTeclado {
+        height: 20rem;
+        width: 28rem;
+    }
+
+}
+
+@media screen and (max-width:640px) {
+    .numTeclado {
+        line-height: 2.5rem;
+    }
+
+    .contTeclado {
+        height: 17.4rem;
+    }
+
+}
+
+@media screen and (max-width:375px) {
+    .botonconfigen {
+        font-size: 0rem;
+        padding: 0.7rem;
+    }
+
+    .botonconfigen img {
+        height: 2.75rem;
+        width: 2.75rem;
+        margin: 0rem;
+    }
+
+    .botonconfigen p {
+        height: 2.75rem;
+        width: 2.75rem;
+        margin: 0rem;
+    }
+
+    .letrasinfolinea {
+        display: block;
+    }
+
+    .letrasinfolinea h3 {
+        font-size: xx-large;
+    }
+
+    .nombreOrg {
+        display: none;
+    }
+
+    .numnivacc {
+        font-size: 4rem;
+    }
+
+    .reloj {
+        display: none;
+        font-size: 4rem;
+    }
+
+    .tamano36 {
+        height: 4.04rem;
+        width: auto;
+    }
+
+    .nombrelineas {
+        display: inline-block;
+    }
+
+
+    .modal {
+        top: 0;
+        height: -webkit-fill-available;
+    }
+
+    .numTeclado {
+        padding: 1.5rem 2rem;
+        font-size: 2.75rem;
+        line-height: 3.5rem;
+    }
+
+    .textareaTeclado {
+        height: 5.5rem;
+        font-size: 2.75rem;
+    }
+
+    .numTeclado img {
+        height: 2.2rem;
+        width: 2.2rem;
+    }
+
+    .contTeclado {
+        height: auto;
+        width: auto;
+    }
+}
+
+
+@media screen and (max-width:360px) {
+    .botonconfigen img {
+        height: 2.54rem;
+        width: 2.54rem;
+    }
+
+    .botonconfigen p {
+        height: 2.54rem;
+        width: 2.54rem;
+    }
+}

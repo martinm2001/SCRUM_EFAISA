@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manguera entrada</title>
+    <link rel="icon" href="img/iconohead.ico" />
+    <link rel="stylesheet" href="css/bootstrap.min.css" />
+    <script src="scripts/jquery-3.5.0.min.js"></script>
+    <script src="scripts/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="css/style.css" />
+    <script src="scripts/script.js"></script>
+    <script src="scripts/barraestado.js"></script>
+  </head>
+  <script>
+    let estadoEntradas = [];
+    let estadoSalidas = [];
+    let estadoFuente = [];
+    let estadoDesconexion = [];
+    let ExtintorVencido = 0;
+
+    Date.prototype.addDays = function (days) {
+      const date = new Date(this.valueOf());
+      date.setDate(date.getDate() + days);
+      return date;
+    };
+
+    setInterval(() => {
+      $.getJSON(
+        `${window.location.port}//${window.location.hostname}/api/general`,
+        (dataGeneral) => {
+          $.getJSON(
+            `${window.location.port}//${window.location.hostname}/api/serial/entradas`,
+            (dataEntradas) => {
+              $.getJSON(
+                `${window.location.port}//${window.location.hostname}/api/serial/fuente`,
+                (dataFuente) => {
+                  $.getJSON(
+                  `${window.location.port}//${window.location.hostname}/api/inout/desconexion`,
+                  (dataDesconexion) => {
+                    if (
+                      dataEntradas.data != estadoEntradas ||
+                      dataFuente.data != estadoFuente ||
+                      dataDesconexion.data != estadoDesconexion
+                    ) {
+                      estadoEntradas = dataEntradas.data;
+                      estadoFuente = dataFuente.data;
+                      estadoDesconexion = dataDesconexion;
+                      barraEstado(
+                        dataGeneral,
+                        dataEntradas.data,
+                        dataFuente.data,
+                        dataDesconexion
+                      );
+                    }
+                  })                  
+                }
+              );
+            }
+          );
+        }
+      );
+    }, 1500);
+
+    setInterval(() => {
+      let fechaActual = new Date(Date());
+      $.getJSON(
+        `${window.location.port}//${window.location.hostname}/api/extintores`,
+        (data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (!(data[i].ano_fabric === null)) {
+              let fechaAno = new Date(
+                `${data[i].ano_fabric.split("/")[1]}/${
+                  data[i].ano_fabric.split("/")[0]
+                }/${data[i].ano_fabric.split("/")[2]}`
+              );
+              let fechaAno10 = fechaAno.addDays(-10);
+              if (fechaActual > fechaAno) {
+                ExtintorVencido = 1;
+              } else if (fechaActual > fechaAno10) {
+                ExtintorVencido = 1;
+              }
+            }
+            if (!(data[i].fecha_carga === null)) {
+              let fechaCarga = new Date(
+                `${data[i].fecha_carga.split("/")[1]}/${
+                  data[i].fecha_carga.split("/")[0]
+                }/${data[i].fecha_carga.split("/")[2]}`
+              );
+              let fechaCarga10 = fechaCarga.addDays(-10);
+              if (fechaActual > fechaCarga) {
+                ExtintorVencido = 1;
+              } else if (fechaActual > fechaCarga10) {
+                ExtintorVencido = 1;
+              }
+            }
+            if (!(data[i].fecha_ph === null)) {
+              let fechaph = new Date(
+                `${data[i].fecha_ph.split("/")[1]}/${
+                  data[i].fecha_ph.split("/")[0]
+                }/${data[i].fecha_ph.split("/")[2]}`
+              );
+              let fechaph10 = fechaph.addDays(-10);
+              if (fechaActual > fechaph) {
+                ExtintorVencido = 1;
+              } else if (fechaActual > fechaph10) {
+                ExtintorVencido = 1;
+              }
+            }
+          }
+        }
+      );
+      $.getJSON(
+        `${window.location.port}//${window.location.hostname}/api/mangueras`,
+        (data) => {
+          for (let i = 0; i < data.length; i++) {
+            if (!(data[i].fecha_instalacion === null)) {
+              let fechaInstalacion = new Date(
+                `${data[i].fecha_instalacion.split("/")[1]}/${
+                  data[i].fecha_instalacion.split("/")[0]
+                }/${data[i].fecha_instalacion.split("/")[2]}`
+              );
+              let fechaInstalacion10 = fechaInstalacion.addDays(-10);
+              if (fechaActual > fechaInstalacion) {
+                ExtintorVencido = 1;
+              } else if (fechaActual > fechaInstalacion10) {
+                ExtintorVencido = 1;
+              }
+            }
+            if (!(data[i].fecha_ph === null)) {
+              let fechaph = new Date(
+                `${data[i].fecha_ph.split("/")[1]}/${
+                  data[i].fecha_ph.split("/")[0]
+                }/${data[i].fecha_ph.split("/")[2]}`
+              );
+              let fechaph10 = fechaph.addDays(-10);
+              if (fechaActual > fechaph) {
+                ExtintorVencido = 1;
+              } else if (fechaActual > fechaph10) {
+                ExtintorVencido = 1;
+              }
+            }
+          }
+        }
+      );
+      if (ExtintorVencido === 1) {
+        if (document.getElementById("barraExtintor") === null) {
+          let imgExtintor = document.createElement('img')
+          imgExtintor.setAttribute('id','barraExtintor')
+          imgExtintor.setAttribute('src','img/extintor.png')
+          imgExtintor.setAttribute('title','Extintor')
+          imgExtintor.setAttribute('class','img-fluid tamano36')
+          document.getElementById("contendorBarraExtintor").appendChild(imgExtintor)  
+        }      
+      } else {
+        if (document.getElementById("barraExtintor") != null) {
+          document.getElementById("barraExtintor").remove()
+        }        
+      }
+    }, 5000);
+    
+    const params = new URLSearchParams(window.location.search);
+    const nroin = params.get("nroin");
+    const ventana = Number(params.get("ventana"));
+    const idman = params.get("idman");
+    document.title = `Manguera entrada ${nroin}`;
+
+    const postManguera = () => {
+      let url = `${window.location.port}//${window.location.hostname}/api/mangueras`;
+      let valores = {
+        id_sector: Number(nroin),
+        alias: String(document.getElementById("alias").value),
+        fabricante: String(document.getElementById("fabricante").value),
+        nro_serie: Number(document.getElementById("nro_serie").value),
+        tipo: String(document.getElementById("tipo").value),
+        codigo_q: Number(document.getElementById("codigo_q").value),
+        metros: Number(document.getElementById("metros").value),
+        ubicacion: String(document.getElementById("ubicacion").value),
+        nro_estacion: Number(document.getElementById("nro_estacion").value),
+        fecha_instalacion: String(
+          document.getElementById("fecha_instalacion").value
+        ),
+        fecha_ph: String(document.getElementById("fecha_ph").value),
+        certificador: String(document.getElementById("certificador").value),
+        tel_contacto: Number(document.getElementById("tel_contacto").value),
+        email: String(document.getElementById("email").value),
+        infoadicional: String(document.getElementById("infoadicional").value),
+      };
+      // POST request using fetch()
+      fetch(url, {
+        // Adding method type
+        method: "POST",
+
+        // Adding body or contents to send
+        body: JSON.stringify(valores),
+
+        // Adding headers to the request
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        // Converting to JSON
+        .then((response) => response.json())
+
+        // Displaying results to console
+        .then((json) => {
+          if (json.status == "OK") {
+            let mensageForm = document.createElement("div");
+            mensageForm.setAttribute(
+              "class",
+              "alert alert-success cartelinfoform"
+            );
+            mensageForm.setAttribute("role", "alert");
+            mensageForm.innerText = "Guardado!";
+            document.getElementById("mensageForm").appendChild(mensageForm);
+          } else {
+            let mensageForm = document.createElement("div");
+            mensageForm.setAttribute(
+              "class",
+              "alert alert-danger cartelinfoform"
+            );
+            mensageForm.setAttribute("role", "alert");
+            mensageForm.innerText = "Error";
+            document.getElementById("mensageForm").appendChild(mensageForm);
+          }
+        });
+    };
+
+    const putManguera = () => {
+      let url = `${window.location.port}//${window.location.hostname}/api/mangueras`;
+      let valores = {
+        id: Number(idman),
+        alias: String(document.getElementById("alias").value),
+        fabricante: String(document.getElementById("fabricante").value),
+        nro_serie: Number(document.getElementById("nro_serie").value),
+        tipo: String(document.getElementById("tipo").value),
+        codigo_q: Number(document.getElementById("codigo_q").value),
+        metros: Number(document.getElementById("metros").value),
+        ubicacion: String(document.getElementById("ubicacion").value),
+        nro_estacion: Number(document.getElementById("nro_estacion").value),
+        fecha_instalacion: String(
+          document.getElementById("fecha_instalacion").value
+        ),
+        fecha_ph: String(document.getElementById("fecha_ph").value),
+        certificador: String(document.getElementById("certificador").value),
+        tel_contacto: Number(document.getElementById("tel_contacto").value),
+        email: String(document.getElementById("email").value),
+        infoadicional: String(document.getElementById("infoadicional").value),
+      };
+      // PUT request using fetch()
+      fetch(url, {
+        // Adding method type
+        method: "PUT",
+
+        // Adding body or contents to send
+        body: JSON.stringify(valores),
+
+        // Adding headers to the request
+        headers: {
+          "Content-type": "application/json; charset=UTF-8",
+          "Access-Control-Allow-Origin": "*",
+        },
+      })
+        // Converting to JSON
+        .then((response) => response.json())
+
+        // Displaying results to console
+        .then((json) => {
+          if (json.status == "OK") {
+            let mensageForm = document.createElement("div");
+            mensageForm.setAttribute(
+              "class",
+              "alert alert-success cartelinfoform"
+            );
+            mensageForm.setAttribute("role", "alert");
+            mensageForm.innerText = "Guardado!";
+            document.getElementById("mensageForm").appendChild(mensageForm);
+          } else {
+            let mensageForm = document.createElement("div");
+            mensageForm.setAttribute(
+              "class",
+              "alert alert-danger cartelinfoform"
+            );
+            mensageForm.setAttribute("role", "alert");
+            mensageForm.innerText = "Error";
+            document.getElementById("mensageForm").appendChild(mensageForm);
+          }
+        });
+    };
+  </script>
+  <body>
+    <header>
+      <nav class="navbar navbar-default barraestado">
+        <div
+          id="barraEstado"
+          class="container-fluid displayinicial"
+          style="text-align: center"
+        >
+          <div class="float-start" style="display: flex">
+            <div id="contenedorAlarmaGeneral"></div>
+            <div id="contendorDesconexion"></div>
+            <div id="contendorDerivTierra"></div>
+            <div id="contendorBarraExtintor"></div>
+        </div>
+        <h1
+          id="nomOrgBarra"
+          title="Nombre Organizacion"
+          class="float-center nombreOrg"
+        ></h1>
+        <div class="float-end" style="display: flex">
+          <img
+            src="img/muneEfaisa.png"
+            title="EFAISA S.A.S"
+            class="img-fluid tamano36"
+          />
+          <img
+            id="candado"
+            src="img/candado_amarillo.png"
+            title="Nivel acceso, 0"
+            class="img-fluid tamano36"
+          />
+          <img
+            src="img/internet_ok.png"
+            title="Aprovisionado"
+            class="img-fluid tamano36"
+          />
+          <div id="contenedorAlimentacion"></div>
+          <div id="contenedorBateria"></div>
+          <div id="reloj" class="float-end reloj"></div>
+        </div>
+      </nav>
+    </header>
+    <main class="contprinc">
+      <nav class="navbar navbar-default">
+        <h3 id="headerMan" class="headerConfig">Manguera entrada</h3>
+        <script>
+          document.getElementById(
+            "headerMan"
+          ).innerText = `Manguera entrada ${nroin}`;
+          if (idman) {
+            $.getJSON(
+              `${window.location.port}//${window.location.hostname}/api/mangueras?idman=${idman}`,
+              (data) => {
+                if (ventana == 2) {
+                  document
+                    .getElementById("alias")
+                    .setAttribute("value", data.alias);
+                  document
+                    .getElementById("fabricante")
+                    .setAttribute("value", data.fabricante);
+                  document
+                    .getElementById("nro_serie")
+                    .setAttribute("value", data.nro_serie);
+                  document.getElementById("tipoINMan").innerText = data.tipo;
+                  document
+                    .getElementById("codigo_q")
+                    .setAttribute("value", data.codigo_q);
+                  document
+                    .getElementById("metros")
+                    .setAttribute("value", data.metros);
+                  document
+                    .getElementById("ubicacion")
+                    .setAttribute("value", data.ubicacion);
+                  document
+                    .getElementById("nro_estacion")
+                    .setAttribute("value", data.nro_estacion);
+                  document
+                    .getElementById("fecha_instalacion")
+                    .setAttribute(
+                      "value",
+                      data.fecha_instalacion
+                        ? `${data.fecha_instalacion.split("/")[2]}-${
+                            data.fecha_instalacion.split("/")[1]
+                          }-${data.fecha_instalacion.split("/")[0]}`
+                        : ""
+                    ); //año-mes-dia
+                  document
+                    .getElementById("fecha_ph")
+                    .setAttribute(
+                      "value",
+                      data.fecha_ph
+                        ? `${data.fecha_ph.split("/")[2]}-${
+                            data.fecha_ph.split("/")[1]
+                          }-${data.fecha_ph.split("/")[0]}`
+                        : ""
+                    ); //año-mes-dia
+                  document
+                    .getElementById("certificador")
+                    .setAttribute("value", data.certificador);
+                  document
+                    .getElementById("tel_contacto")
+                    .setAttribute("value", data.tel_contacto);
+                  document
+                    .getElementById("email")
+                    .setAttribute("value", data.email);
+                  document.getElementById("infoadicional").value =
+                    data.infoadicional;
+                } else {
+                  document
+                    .getElementById("alias")
+                    .setAttribute("value", data.alias);
+                  document.getElementById("alias").disabled = true;
+                  document
+                    .getElementById("fabricante")
+                    .setAttribute("value", data.fabricante);
+                  document.getElementById("fabricante").disabled = true;
+                  document
+                    .getElementById("nro_serie")
+                    .setAttribute("value", data.nro_serie);
+                  document.getElementById("nro_serie").disabled = true;
+                  document.getElementById("tipoINMan").innerText = data.tipo;
+                  document.getElementById("tipo").disabled = true;
+                  document
+                    .getElementById("codigo_q")
+                    .setAttribute("value", data.codigo_q);
+                  document.getElementById("codigo_q").disabled = true;
+                  document
+                    .getElementById("metros")
+                    .setAttribute("value", data.metros);
+                  document.getElementById("metros").disabled = true;
+                  document
+                    .getElementById("ubicacion")
+                    .setAttribute("value", data.ubicacion);
+                  document.getElementById("ubicacion").disabled = true;
+                  document
+                    .getElementById("nro_estacion")
+                    .setAttribute("value", data.nro_estacion);
+                  document.getElementById("nro_estacion").disabled = true;
+                  document
+                    .getElementById("fecha_instalacion")
+                    .setAttribute(
+                      "value",
+                      data.fecha_instalacion
+                        ? `${data.fecha_instalacion.split("/")[2]}-${
+                            data.fecha_instalacion.split("/")[1]
+                          }-${data.fecha_instalacion.split("/")[0]}`
+                        : ""
+                    ); //año-mes-dia
+                  document.getElementById("fecha_instalacion").disabled = true;
+                  document
+                    .getElementById("fecha_ph")
+                    .setAttribute(
+                      "value",
+                      data.fecha_ph
+                        ? `${data.fecha_ph.split("/")[2]}-${
+                            data.fecha_ph.split("/")[1]
+                          }-${data.fecha_ph.split("/")[0]}`
+                        : ""
+                    ); //año-mes-dia
+                  document.getElementById("fecha_ph").disabled = true;
+                  document
+                    .getElementById("certificador")
+                    .setAttribute("value", data.certificador);
+                  document.getElementById("certificador").disabled = true;
+                  document
+                    .getElementById("tel_contacto")
+                    .setAttribute("value", data.tel_contacto);
+                  document.getElementById("tel_contacto").disabled = true;
+                  document
+                    .getElementById("email")
+                    .setAttribute("value", data.email);
+                  document.getElementById("email").disabled = true;
+                  document.getElementById("infoadicional").value =
+                    data.infoadicional;
+                  document.getElementById("infoadicional").disabled = true;
+                }
+              }
+            );
+          }
+        </script>
+      </nav>
+      <div class="contenedorprinc config">
+        <p>Alias Manguera*</p>
+        <input
+          type="text"
+          id="alias"
+          class="form-control inputfomulario mb-3"
+          placeholder="Alias Manguera"
+        />
+        <p>Fabricante</p>
+        <input
+          type="text"
+          id="fabricante"
+          class="form-control inputfomulario mb-3"
+          placeholder="Fabricante"
+        />
+        <p>Nro. Serie</p>
+        <input
+          type="number"
+          id="nro_serie"
+          class="form-control inputfomulario mb-3"
+          placeholder="Nro. Serie"
+        />
+        <p>Tipo Manguera*</p>
+        <select class="form-control inputfomulario mb-3" id="tipo">
+          <option id="tipoINMan" selected disabled hidden>Sin Definir</option>
+          <option>ARJET</option>
+          <option>ARMTEC</option>
+          <option>ARMTEC HD</option>
+          <option>Con Sello IRAM</option>
+          <option>Sin Sello IRAM</option>
+          <option>RYLJET</option>
+          <option>OROFLEX</option>
+        </select>
+        <p>Codigo Q</p>
+        <input
+          type="number"
+          id="codigo_q"
+          class="form-control inputfomulario mb-3"
+          placeholder="Codigo Q"
+        />
+        <p>Metros*</p>
+        <input
+          type="number"
+          id="metros"
+          class="form-control inputfomulario mb-3"
+          placeholder="Mts"
+        />
+        <p>Ubicacion*</p>
+        <input
+          type="text"
+          id="ubicacion"
+          class="form-control inputfomulario mb-3"
+          placeholder="Ubicacion"
+        />
+        <p>Nro. Estacion</p>
+        <input
+          type="number"
+          id="nro_estacion"
+          class="form-control inputfomulario mb-3"
+          placeholder="Nro Estacion"
+        />
+        <p>Fecha Instalacion</p>
+        <input
+          type="date"
+          id="fecha_instalacion"
+          class="form-control inputfomulario mb-3"
+          placeholder="Fecha Instalacion"
+        />
+        <p>Fecha P.H.</p>
+        <input
+          type="date"
+          id="fecha_ph"
+          class="form-control inputfomulario mb-3"
+          placeholder="Fecha P.H."
+        />
+        <p>Certificador</p>
+        <input
+          type="text"
+          id="certificador"
+          class="form-control inputfomulario mb-3"
+          placeholder="Certificador"
+        />
+        <p>Correo Certificador</p>
+        <input
+          type="email"
+          id="email"
+          class="form-control inputfomulario mb-3"
+          placeholder="Correo Certificador"
+        />
+        <p>Telefono Certificador</p>
+        <input
+          type="number"
+          id="tel_contacto"
+          class="form-control inputfomulario mb-3"
+          placeholder="Telefono Certificador"
+        />
+        <p>Informacion Adicional</p>
+        <textarea
+          type="text"
+          id="infoadicional"
+          class="form-control textareafomulario mb-3"
+          rows="14"
+          placeholder="Informacion Adicional"
+        ></textarea>
+        <!--aparece vuendo ventana es = 2-->
+        <div id="botonSubmit"></div>
+        <script>
+          if (ventana === 2) {
+            let boton = document.createElement("button");
+            boton.setAttribute("type", "submit");
+            if (idman) {
+              boton.setAttribute("onclick", "putManguera()");
+            } else {
+              boton.setAttribute("onclick", "postManguera()");
+            }
+            boton.setAttribute("class", "btn btn-light botonformulario");
+            let imagenboton = document.createElement("img");
+            imagenboton.setAttribute("src", "img/guardar.png");
+            imagenboton.setAttribute("width", "36px");
+            boton.appendChild(imagenboton);
+            let textoBoton = document.createTextNode("Guardar");
+            boton.appendChild(textoBoton);
+            document.getElementById("botonSubmit").appendChild(boton);
+          }
+        </script>
+        <div id="mensageForm"></div>
+      </div>
+    </main>
+    <footer id="footer">
+      <script>
+        ventana === 1
+          ? crearBotonFooter(
+              `infoINextintores.html?nroin=${nroin}`,
+              "img/boton_cruz.png"
+            )
+          : null;
+        ventana === 2
+          ? crearBotonFooter(
+              `extintoresINlista.html?nroin=${nroin}`,
+              "img/boton_cruz.png"
+            )
+          : null;
+      </script>
+    </footer>
+  </body>
+</html>

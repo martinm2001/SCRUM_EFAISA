@@ -1,0 +1,3 @@
+Prodimientos a seguir a partir de las pruebas en SCRUM-ESP/RPI:
+1-En mensaje de evento poner una captura de la camara de la entrada (EP)
+2-test basicos y correccion de errores que queden expuestos en el proceso
