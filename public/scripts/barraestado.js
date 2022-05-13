@@ -1,15 +1,10 @@
-/*  Programación de la barra de estado superior */
-//Envía a la página los íconos superiores (alarma, batería, conexión, etc.)
-
-
-//Funcion unica para barra de estado
-function Barra_estado(img,tipo,donde,titulo,clase,documento,funcion) {
-  let desconexion = document.createElement(img);
-  desconexion.setAttribute("id", tipo);
-  desconexion.setAttribute("src", donde);
-  desconexion.setAttribute("title", titulo);
-  desconexion.setAttribute("class", clase);
-  document.getElementById(documento).appendChild(funcion);
+function crearAlarmaGeneral() {
+  let alarmaGeneral = document.createElement("img");
+  alarmaGeneral.setAttribute("id", "alarmaGeneral");
+  alarmaGeneral.setAttribute("src", "img/campana_roja.png");
+  alarmaGeneral.setAttribute("title", "Alarma General, Activa");
+  alarmaGeneral.setAttribute("class", "img-fluid tamano36");
+  document.getElementById("contenedorAlarmaGeneral").appendChild(alarmaGeneral);
 }
 
 function alarmaGeneral([...valores]) {
@@ -28,10 +23,18 @@ function alarmaGeneral([...valores]) {
       document.getElementById("alarmaGeneral").remove();
     }
     if (activo === 1) {
-      //alarma activa
-      Barra_estado("img","alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral",alarmaGeneral);
+      crearAlarmaGeneral();
     }
   }
+}
+
+function crearDesconexion() {
+  let desconexion = document.createElement("img");
+  desconexion.setAttribute("id", "desconexion");
+  desconexion.setAttribute("src", "img/desconexion.png");
+  desconexion.setAttribute("title", "Desconexion, Activa");
+  desconexion.setAttribute("class", "img-fluid tamano36");
+  document.getElementById("contendorDesconexion").appendChild(desconexion);
 }
 
 function desconexion([...valores]) {
@@ -42,8 +45,7 @@ function desconexion([...valores]) {
     }
   }
   if (document.getElementById("desconexion") === null && activo === 1) {
-   //icono de desconexion
-    Barra_estado("img","desconexion","img/desconexion.png","Desconexion, Activgfdgfda","img-fluid tamano36","contendorDesconexion",desconexion);
+    crearDesconexion();
   } else if (
     activo === 0 &&
     !(document.getElementById("desconexion") == null)
@@ -52,8 +54,14 @@ function desconexion([...valores]) {
   }
 }
 
-
-
+function crearDerivTierra() {
+  let derivTierra = document.createElement("img");
+  derivTierra.setAttribute("id", "derivTierra");
+  derivTierra.setAttribute("src", "img/deriv_tierra.png");
+  derivTierra.setAttribute("title", "Derivacion Tierra, Activa");
+  derivTierra.setAttribute("class", "img-fluid tamano36");
+  document.getElementById("contendorDerivTierra").appendChild(derivTierra);
+}
 
 function derivTierra(estado) {
   let estadoActual = document.getElementById("contendorDerivTierra");
@@ -65,14 +73,10 @@ function derivTierra(estado) {
       document.getElementById("derivTierra").remove();
     }
     if (estado === 1) {
-      Barra_estado("img","derivTierra","img/deriv_tierra.png","Derivacion Tierra, Activa","img-fluid tamano36","contendorDerivTierra",derivTierra);
-
+      crearDerivTierra();
     }
   }
 }
-
-
-
 
 function reloj() {
   let fecha = new Date(); //Actualizar fecha.
