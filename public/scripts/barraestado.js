@@ -2,14 +2,14 @@
 //Envía a la página los íconos superiores (alarma, batería, conexión, etc.)
 
 //Funcion unica para barra de estado
-function Barra_estado(img,tipo,donde,titulo,clase,documento) 
+function Barra_estado(img,tipo,donde,titulo,clase,documento,conec) 
 {
-  let desconexion = document.createElement(img);
-  desconexion.setAttribute("id", tipo);
-  desconexion.setAttribute("src", donde);
-  desconexion.setAttribute("title", titulo);
-  desconexion.setAttribute("class", clase);
-  document.getElementById(documento).appendChild(desconexion);
+ 
+  conec.setAttribute("id", tipo);
+  conec.setAttribute("src", donde);
+  conec.setAttribute("title", titulo);
+  conec.setAttribute("class", clase);
+  document.getElementById(documento).appendChild(conec);
 }
 
 function alarmaGeneral([...valores]) {
@@ -29,7 +29,7 @@ function alarmaGeneral([...valores]) {
     }
     if (activo === 1) {
       //alarma activa
-      Barra_estado("img","alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral");
+      Barra_estado("img","alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral","document.createElement(img)");
     }
   }
 }
