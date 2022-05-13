@@ -34,7 +34,7 @@ function alarmaGeneral([...valores]) {
     }
     if (activo === 1) {
       //alarma activa
-      Barra_estado("alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral");
+      Barra_estado("alarmaGeneral","img/campana_roja.png","Alarma General Activa","img-fluid tamano36","contenedorAlarmaGeneral");
     }
   }
 }
@@ -48,7 +48,7 @@ function desconexion([...valores]) {
   }
   if (document.getElementById("desconexion") === null && activo === 1) {
    //icono de desconexion
-    Barra_estado("desconexion","img/desconexion.png","Desconexion, Activgfdgfda","img-fluid tamano36","contendorDesconexion");
+    Barra_estado("desconexion","img/desconexion.png","Desconexion, Activa","img-fluid tamano36","contendorDesconexion");
   } else if (
     activo === 0 &&
     !(document.getElementById("desconexion") == null)
