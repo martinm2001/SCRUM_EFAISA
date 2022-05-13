@@ -1,16 +1,21 @@
 /*  Programación de la barra de estado superior */
 //Envía a la página los íconos superiores (alarma, batería, conexión, etc.)
 
+
 //Funcion unica para barra de estado
-function Barra_estado(img,tipo,donde,titulo,clase,documento,conec) 
+function Barra_estado(tipo,donde,titulo,clase,documento) 
 {
- 
+   //Elemnto para la barra
+  let conec = document.createElement("img");
+   //Seteo de atributos
   conec.setAttribute("id", tipo);
   conec.setAttribute("src", donde);
   conec.setAttribute("title", titulo);
   conec.setAttribute("class", clase);
+  //Obtener 
   document.getElementById(documento).appendChild(conec);
 }
+
 
 function alarmaGeneral([...valores]) {
   let activo = 0;
@@ -29,7 +34,7 @@ function alarmaGeneral([...valores]) {
     }
     if (activo === 1) {
       //alarma activa
-      Barra_estado("img","alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral","document.createElement(img)");
+      Barra_estado("alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral");
     }
   }
 }
@@ -43,7 +48,7 @@ function desconexion([...valores]) {
   }
   if (document.getElementById("desconexion") === null && activo === 1) {
    //icono de desconexion
-    Barra_estado("img","desconexion","img/desconexion.png","Desconexion, Activgfdgfda","img-fluid tamano36","contendorDesconexion",desconexion);
+    Barra_estado("desconexion","img/desconexion.png","Desconexion, Activgfdgfda","img-fluid tamano36","contendorDesconexion");
   } else if (
     activo === 0 &&
     !(document.getElementById("desconexion") == null)
@@ -65,14 +70,11 @@ function derivTierra(estado) {
       document.getElementById("derivTierra").remove();
     }
     if (estado === 1) {
-      Barra_estado("img","derivTierra","img/deriv_tierra.png","Derivacion Tierra, Activa","img-fluid tamano36","contendorDerivTierra",derivTierra);
+      Barra_estado("derivTierra","img/deriv_tierra.png","Derivacion Tierra, Activa","img-fluid tamano36","contendorDerivTierra");
 
     }
   }
 }
-
-
-
 
 function reloj() {
   let fecha = new Date(); //Actualizar fecha.
