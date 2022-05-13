@@ -1,3 +1,4 @@
+/*
 import mysql from "mysql";
 
 const connection = mysql.createConnection({
@@ -6,6 +7,7 @@ const connection = mysql.createConnection({
   password: "1q2w3e4r5t6y",
   database: "interfaz",
 });
+*/
 
 const getControlAcceso = (req: any, res: any) => {
   connection.query(
