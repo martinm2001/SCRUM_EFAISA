@@ -1,14 +1,6 @@
 const dayjs = require("dayjs");
 const isBetween = require("dayjs/plugin/isBetween");
 dayjs.extend(isBetween);
-import mysql from "mysql";
-
-const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "efaisa",
-  password: "1q2w3e4r5t6y",
-  database: "interfaz",
-});
 
 const calcularVencimientoAnoFabricacion = (tipo: any, fecha: any) => {
   if (
