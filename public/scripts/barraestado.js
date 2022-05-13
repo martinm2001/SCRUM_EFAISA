@@ -32,7 +32,7 @@ function alarmaGeneral([...valores]) {
       document.getElementById("alarmaGeneral").remove();
     }
     if (activo === 1) {
-       Barra_estado("img","alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral","alarmaGeneral");
+       Barra_estado("img","alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral",alarmaGeneral);
     }
   }
 }
