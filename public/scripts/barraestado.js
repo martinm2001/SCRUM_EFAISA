@@ -7,6 +7,15 @@ function crearAlarmaGeneral() {
   document.getElementById("contenedorAlarmaGeneral").appendChild(alarmaGeneral);
 }
 
+function Barra_estado(img,tipo,donde,titulo,clase,documento,funcion) {
+  let desconexion = document.createElement(img);
+  desconexion.setAttribute("id", tipo);
+  desconexion.setAttribute("src", donde);
+  desconexion.setAttribute("title", titulo);
+  desconexion.setAttribute("class", clase);
+  document.getElementById(documento).appendChild(funcion);
+}
+
 function alarmaGeneral([...valores]) {
   let activo = 0;
   for (let i = 0; i < valores.length; i++) {
@@ -23,7 +32,7 @@ function alarmaGeneral([...valores]) {
       document.getElementById("alarmaGeneral").remove();
     }
     if (activo === 1) {
-      crearAlarmaGeneral();
+       Barra_estado("img","alarmaGeneral","img/campana_roja.png","Alarma General,gfd Activa","img-fluid tamano36","contenedorAlarmaGeneral",alarmaGeneral);
     }
   }
 }
