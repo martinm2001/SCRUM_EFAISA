@@ -1,14 +1,15 @@
 /*  Programación de la barra de estado superior */
 //Envía a la página los íconos superiores (alarma, batería, conexión, etc.)
 
-
 //Funcion unica para barra de estado
-function Barra_estado(img,tipo,donde,titulo,clase,documento) {
-  desconexion.setAttribute("id", ""+  tipo);
+function Barra_estado(img,tipo,donde,titulo,clase,documento) 
+{
+  let desconexion = document.createElement(img);
+  desconexion.setAttribute("id", tipo);
   desconexion.setAttribute("src", donde);
   desconexion.setAttribute("title", titulo);
   desconexion.setAttribute("class", clase);
-  document.getElementById(documento).appendChild(document.createElement(img));
+  document.getElementById(documento).appendChild(desconexion);
 }
 
 function alarmaGeneral([...valores]) {
