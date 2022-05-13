@@ -3,8 +3,8 @@
 
 
 //Funcion unica para barra de estado
-function Barra_estado(img,tipo,donde,titulo,clase,documento,funcion) {
-  desconexion.setAttribute("id", tipo);
+function Barra_estado(img,tipo,donde,titulo,clase,documento) {
+  desconexion.setAttribute("id", ""+  tipo);
   desconexion.setAttribute("src", donde);
   desconexion.setAttribute("title", titulo);
   desconexion.setAttribute("class", clase);
