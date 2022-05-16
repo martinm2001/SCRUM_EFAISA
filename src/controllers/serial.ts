@@ -2,22 +2,20 @@ import mysql from "mysql";
 import EventEmitter from "events";
 import serialPort from "serialport";
 import TelegramBot from "node-telegram-bot-api";
-
 const dayjs = require("dayjs");
-//const connection = require("./conec");
 
 const connection = mysql.createConnection({
-        host: "127.0.0.1",
-        user: "efaisa",
-        password: "1q2w3e4r5t6y",
-        database: "interfaz",
-      });
+  host: "127.0.0.1",
+  user: "efaisa",
+  password: "1q2w3e4r5t6y",
+  database: "interfaz",
+});
 
 const { eventosManuales } = require("./eventos");
 
 const event = new EventEmitter();
 // RPI "/dev/ttyS0" 
-const uart = new serialPort("COM15", {
+const uart = new serialPort("/dev/ttyS0", {
   baudRate: 115200,
 });
 interface dataSerial {
@@ -94,12 +92,14 @@ event.on("readinputs", (response) => {
   //hay que invertir los que estan seleccionado como tipo de uso robo
 
   getTipoIN().then((tipoin) => {
-    for (let i = 0; i < tipoin.length; i++) {
+console.log('LECTURA PARSEADA: ',response.data);
+for (let i = 0; i < tipoin.length; i++) {
       if (response.data[tipoin[i]] === 1) {
         response.data[tipoin[i]] = 0;
       } else {
         response.data[tipoin[i]] = 1;
       }
+
     }
 
     if (entradas === undefined || estadosAceptados === 0) {
