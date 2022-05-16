@@ -1,0 +1,716 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Extintores / Mangueras entrada</title>
+  <link rel="icon" href="img/iconohead.ico">
+  <link rel="stylesheet" href="css/bootstrap.min.css">
+  <script src="scripts/jquery-3.5.0.min.js"></script>
+  <script src="scripts/bootstrap.min.js"></script>
+
+
+  <link rel="stylesheet" href="css/style.css">
+  <script src="scripts/script.js"></script>
+  <script src="scripts/barraestado.js"></script>
+</head>
+<script>
+  let estadoEntradas = [];
+  let estadoSalidas = [];
+  let estadoFuente = [];
+  let estadoDesconexion = [];
+  let ExtintorVencido = 0;
+
+  Date.prototype.addDays = function(days) {
+    const date = new Date(this.valueOf());
+    date.setDate(date.getDate() + days);
+    return date;
+  };
+
+  setInterval(() => {
+    $.getJSON(
+      `${window.location.port}//${window.location.hostname}/api/general`,
+      (dataGeneral) => {
+        $.getJSON(
+          `${window.location.port}//${window.location.hostname}/api/serial/entradas`,
+          (dataEntradas) => {
+            $.getJSON(
+              `${window.location.port}//${window.location.hostname}/api/serial/fuente`,
+              (dataFuente) => {
+                $.getJSON(
+                `${window.location.port}//${window.location.hostname}/api/inout/desconexion`,
+                (dataDesconexion) => {
+                  if (
+                    dataEntradas.data != estadoEntradas ||
+                    dataFuente.data != estadoFuente ||
+                    dataDesconexion.data != estadoDesconexion
+                  ) {
+                    estadoEntradas = dataEntradas.data;
+                    estadoFuente = dataFuente.data;
+                    estadoDesconexion = dataDesconexion;
+                    barraEstado(
+                      dataGeneral,
+                      dataEntradas.data,
+                      dataFuente.data,
+                      dataDesconexion
+                    );
+                  }
+                })
+                
+              }
+            );
+          }
+        );
+      }
+    );
+  }, 1500);
+    setInterval(() => {   
+    let fechaActual = new Date(Date());
+    $.getJSON(`${window.location.port}//${window.location.hostname}/api/extintores`,(data) => {     
+        for (let i = 0; i < data.length; i++) {
+            if (!(data[i].ano_fabric === null)) {              
+                let fechaAno = new Date(`${data[i].ano_fabric.split('/')[1]}/${data[i].ano_fabric.split('/')[0]}/${data[i].ano_fabric.split('/')[2]}`);
+                let fechaAno10 = fechaAno.addDays(-10);
+                if (fechaActual > fechaAno) {
+                    ExtintorVencido = 1;
+                } else if (fechaActual > fechaAno10) {
+                    ExtintorVencido = 1;
+                }
+            }
+            if (!(data[i].fecha_carga === null)) {
+                let fechaCarga = new Date(`${data[i].fecha_carga.split('/')[1]}/${data[i].fecha_carga.split('/')[0]}/${data[i].fecha_carga.split('/')[2]}`);
+                let fechaCarga10 = fechaCarga.addDays(-10);
+                if (fechaActual > fechaCarga) {
+                    ExtintorVencido = 1;
+                } else if (fechaActual > fechaCarga10) {
+                    ExtintorVencido = 1;
+                }
+            }   
+            if (!(data[i].fecha_ph === null)) {                    
+                let fechaph = new Date(`${data[i].fecha_ph.split('/')[1]}/${data[i].fecha_ph.split('/')[0]}/${data[i].fecha_ph.split('/')[2]}`);
+                let fechaph10 = fechaph.addDays(-10);
+                if (fechaActual > fechaph) {
+                    ExtintorVencido = 1;
+                } else if (fechaActual > fechaph10) {
+                    ExtintorVencido = 1;
+                }
+            }       
+        }
+    })       
+    $.getJSON(`${window.location.port}//${window.location.hostname}/api/mangueras`,(data) => {     
+        for (let i = 0; i < data.length; i++) {    
+          if (!(data[i].fecha_instalacion === null)) {      
+            let fechaInstalacion = new Date(`${data[i].fecha_instalacion.split('/')[1]}/${data[i].fecha_instalacion.split('/')[0]}/${data[i].fecha_instalacion.split('/')[2]}`);
+            let fechaInstalacion10 = fechaInstalacion.addDays(-10);
+            if (fechaActual > fechaInstalacion) {
+                ExtintorVencido = 1;
+            } else if (fechaActual > fechaInstalacion10) {
+                ExtintorVencido = 1;
+            }
+          }
+          if (!(data[i].fecha_ph === null)) {
+            let fechaph = new Date(`${data[i].fecha_ph.split('/')[1]}/${data[i].fecha_ph.split('/')[0]}/${data[i].fecha_ph.split('/')[2]}`);
+            let fechaph10 = fechaph.addDays(-10);
+            if (fechaActual > fechaph) {
+                ExtintorVencido = 1;
+            } else if (fechaActual > fechaph10) {
+                ExtintorVencido = 1;
+            }
+          }
+        }
+    })
+    if (ExtintorVencido === 1) {
+      if (document.getElementById("barraExtintor") === null) {
+        let imgExtintor = document.createElement('img')
+        imgExtintor.setAttribute('id','barraExtintor')
+        imgExtintor.setAttribute('src','img/extintor.png')
+        imgExtintor.setAttribute('title','Extintor')
+        imgExtintor.setAttribute('class','img-fluid tamano36')
+        document.getElementById("contendorBarraExtintor").appendChild(imgExtintor)  
+      }      
+    } else {
+      if (document.getElementById("barraExtintor") != null) {
+        document.getElementById("barraExtintor").remove()
+      }        
+    }
+    }, 5000);    
+  const params = new URLSearchParams(window.location.search);
+  const nroin = params.get('nroin')
+  document.title = `Extintores/Mangueras entrada ${nroin}`
+  
+  const eliminarCampo = (tipo, id) =>{
+    let url = `${window.location.port}//${window.location.hostname}/api/${tipo}`;
+    let valores = {
+      id: Number(id),
+    };
+
+    fetch(url, {
+      // Adding method type
+      method: "delete",
+
+      // Adding body or contents to send
+      body: JSON.stringify(valores),
+
+      // Adding headers to the request
+      headers: {
+        "Content-type": "application/json; charset=UTF-8",
+        "Access-Control-Allow-Origin": "*",
+      },
+    })
+    // Converting to JSON
+    .then((response) => response.json())
+    // Displaying results to console
+    .then((data) => {
+        (data.status === "OK") ? document.getElementById(`${tipo}${id}`).remove() : null
+    });
+  }   
+</script>
+<body>
+  <header>
+    <nav class="navbar navbar-default barraestado">
+        <div
+            id="barraEstado"
+            class="container-fluid displayinicial"
+            style="text-align: center"
+        >          
+        <div class="float-start"  style="display: flex;">
+          <div id="contenedorAlarmaGeneral"></div>
+          <div id="contendorDesconexion"></div>
+          <div id="contendorDerivTierra"></div>
+          <div id="contendorBarraExtintor"></div>
+        </div>
+        <h1 id="nomOrgBarra" title="Nombre Organizacion" class="float-center nombreOrg"></h1>
+        <div class="float-end" style="display: flex;">
+            <img
+                src="img/muneEfaisa.png"
+                title="EFAISA S.A.S"
+                class="img-fluid tamano36"
+            />
+            <img
+                id="candado"
+                src="img/candado_amarillo.png"
+                title="Nivel acceso, 0"
+                class="img-fluid tamano36"
+            />
+            <img
+                src="img/internet_ok.png"
+                title="Aprovisionado"
+                class="img-fluid tamano36"
+            />          
+            <div id="contenedorAlimentacion"></div>
+            <div id="contenedorBateria"></div>
+            <div id="reloj" class="float-end reloj"></div>
+        </div>                    
+    </nav>
+</header>
+  <main class="contprinc">
+    <nav class="navbar navbar-default ">
+      <h3 id="headerConfig" class="headerConfig">Extintores / Mangueras entrada</h3>
+      <script>
+        document.getElementById('headerConfig').innerText = `Extintores / Mangueras entrada ${nroin}`
+      </script>
+    </nav>
+    <div class="contenedorprinc config">
+      <div class="recuadrosbotones">
+        <a id="botonExt" href='#' class="btn btn-light btn-light btn-outline-dark botonconfig" role="button">
+          <img src="img/extintor.png" height="36px" width="36px">
+          Agregar Extintor
+        </a>
+        <a  id="botonMan" href='#' class="btn btn-light btn-light btn-outline-dark botonconfig" role="button">
+          <img src="img/manguera.png" height="36px" width="36px">
+          Agregar Manguera
+        </a>
+        <script>
+          document.getElementById('botonExt').setAttribute('href', `extintoresIN.html?nroin=${nroin}&&ventana=2`)
+          document.getElementById('botonMan').setAttribute('href', `mangueraIN.html?nroin=${nroin}&&ventana=2`)
+        </script>
+      </div>
+      <div class="table-responsive" style="overflow-y: scroll; height: 89%">
+        <table class="table table-striped">
+          <thead>
+            <tr>
+              <th>
+                <center>
+                  <p>Elemento</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Alias</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Fabricante</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Nro. Serie</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Nro. IRAM</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Nro. DPS</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Nro. Control</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Tipo</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Codigo Q</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Kg / Mts</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Ubicacion</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Nro. Estacion</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Vencimiento Envase</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Vencimiento Carga / Instalacion</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Vencimiento P.H.</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Recargador / Cetificador</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Telefono</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Correo</p>
+                </center>
+              </th>
+              <th>
+                <center>
+                  <p>Eliminar</p>
+                </center>
+              </th>
+            </tr>
+          </thead>
+          <tbody id="tbody">
+            <script>     
+            let fechaActual = new Date()
+            $.getJSON(`${window.location.port}//${window.location.hostname}/api/extintores?nroin=${nroin}`,(data) => {
+                for (let i = 0; i < data.length; i++) {                                                                                            
+                    let fila = document.createElement('tr')
+                    fila.setAttribute('id',`extintores${data[i].id}`)
+                    //tipo elemento
+                    let tipoElemento = document.createElement('th')
+                    let tipoElementoCenter = document.createElement('center')
+                    tipoElementoCenter.setAttribute('class','tipoElemento')
+                    let tipoElementoCenterHref = document.createElement('a')
+                    tipoElementoCenterHref.setAttribute('href',`extintoresIN.html?idext=${data[i].id}&&nroin=${nroin}&&ventana=2`)
+                    tipoElementoCenterHref.innerText = "Extintor"
+                    tipoElementoCenter.appendChild(tipoElementoCenterHref)
+                    tipoElemento.appendChild(tipoElementoCenter)
+                    fila.appendChild(tipoElemento)
+                    //alias extintor
+                    let aliasExtintor = document.createElement('td')
+                    let aliasExtintorP = document.createElement('p')                                
+                    aliasExtintor.appendChild(aliasExtintorP)
+                    aliasExtintorP.innerText = data[i].alias
+                    fila.appendChild(aliasExtintor)
+                    //fabricante
+                    let fabricanteExtintor = document.createElement('td')
+                    let fabricanteExtintorCenter = document.createElement('center')                                
+                    let fabricanteExtintorCenterP = document.createElement('p')                                                                
+                    fabricanteExtintorCenterP.innerText = data[i].fabricante
+                    fabricanteExtintorCenter.appendChild(fabricanteExtintorCenterP)
+                    fabricanteExtintor.appendChild(fabricanteExtintorCenter)
+                    fila.appendChild(fabricanteExtintor)
+                    //numero serie
+                    let nroSerieExtintor = document.createElement('td')
+                    let nroSerieExtintorCenter = document.createElement('center')                                
+                    let nroSerieExtintorCenterP = document.createElement('p')                                                                
+                    nroSerieExtintorCenterP.innerText = data[i].nro_serie
+                    nroSerieExtintorCenter.appendChild(nroSerieExtintorCenterP)
+                    nroSerieExtintor.appendChild(nroSerieExtintorCenter)
+                    fila.appendChild(nroSerieExtintor)      
+                    //numero IRAM
+                    let nroIRAMExtintor = document.createElement('td')
+                    let nroIRAMExtintorCenter = document.createElement('center')                                
+                    let nroIRAMExtintorCenterP = document.createElement('p')                                                                
+                    nroIRAMExtintorCenterP.innerText = data[i].nro_iram
+                    nroIRAMExtintorCenter.appendChild(nroIRAMExtintorCenterP)
+                    nroIRAMExtintor.appendChild(nroIRAMExtintorCenter)
+                    fila.appendChild(nroIRAMExtintor)
+                    //numero DPS
+                    let nroDPSExtintor = document.createElement('td')
+                    let nroDPSExtintorCenter = document.createElement('center')                                
+                    let nroDPSExtintorCenterP = document.createElement('p')                                                                
+                    nroDPSExtintorCenterP.innerText = data[i].nro_dps
+                    nroDPSExtintorCenter.appendChild(nroDPSExtintorCenterP)
+                    nroDPSExtintor.appendChild(nroDPSExtintorCenter)
+                    fila.appendChild(nroDPSExtintor)
+                    //numero CONTROL
+                    let nroControlExtintor = document.createElement('td')
+                    let nroControlExtintorCenter = document.createElement('center')                                
+                    let nroControlExtintorCenterP = document.createElement('p')                                                                
+                    nroControlExtintorCenterP.innerText = data[i].nro_control
+                    nroControlExtintorCenter.appendChild(nroControlExtintorCenterP)
+                    nroControlExtintor.appendChild(nroControlExtintorCenter)
+                    fila.appendChild(nroControlExtintor)
+                    //tipo
+                    let tipoExtintor = document.createElement('td')
+                    let tipoExtintorCenter = document.createElement('center')                                
+                    let tipoExtintorCenterP = document.createElement('p')                                                                
+                    tipoExtintorCenterP.innerText = data[i].tipo
+                    tipoExtintorCenter.appendChild(tipoExtintorCenterP)
+                    tipoExtintor.appendChild(tipoExtintorCenter)
+                    fila.appendChild(tipoExtintor)
+                    //codigo Q
+                    let codigoQExtintor = document.createElement('td')
+                    let codigoQExtintorCenter = document.createElement('center')                                
+                    let codigoQExtintorCenterP = document.createElement('p')                                                                
+                    codigoQExtintorCenterP.innerText = data[i].codigo_q
+                    codigoQExtintorCenter.appendChild(codigoQExtintorCenterP)
+                    codigoQExtintor.appendChild(codigoQExtintorCenter)
+                    fila.appendChild(codigoQExtintor)
+                    //Q kg
+                    let QKgExtintor = document.createElement('td')
+                    let QKgExtintorCenter = document.createElement('center')                                
+                    let QKgExtintorCenterP = document.createElement('p')                                                                
+                    QKgExtintorCenterP.innerText = data[i].q_kg
+                    QKgExtintorCenter.appendChild(QKgExtintorCenterP)
+                    QKgExtintor.appendChild(QKgExtintorCenter)
+                    fila.appendChild(QKgExtintor)
+                    //ubicacion
+                    let ubicacionExtintor = document.createElement('td')
+                    let ubicacionExtintorCenter = document.createElement('center')                                
+                    let ubicacionExtintorCenterP = document.createElement('p')                                                                
+                    ubicacionExtintorCenterP.innerText = data[i].ubicacion
+                    ubicacionExtintorCenter.appendChild(ubicacionExtintorCenterP)
+                    ubicacionExtintor.appendChild(ubicacionExtintorCenter)
+                    fila.appendChild(ubicacionExtintor)
+                    //numero estacion
+                    let nroEstacionExtintor = document.createElement('td')
+                    let nroEstacionExtintorCenter = document.createElement('center')                                
+                    let nroEstacionExtintorCenterP = document.createElement('p')                                                                
+                    nroEstacionExtintorCenterP.innerText = data[i].nro_estacion
+                    nroEstacionExtintorCenter.appendChild(nroEstacionExtintorCenterP)
+                    nroEstacionExtintor.appendChild(nroEstacionExtintorCenter)
+                    fila.appendChild(nroEstacionExtintor)
+                    //Año fabricacion vencido se pone en color #FE001A
+                    let anoFabricacionExtintor = document.createElement('td')                                
+                    let anoFabricacionExtintorCenter = document.createElement('center')                                
+                    let anoFabricacionExtintorCenterP = document.createElement('p')                                                                
+                    if(!(data[i].ano_fabric == null)){
+                      let fechaSeparadaanoFabricacion = data[i].ano_fabric.split('/')
+                      let anoanoFabricacion = Number(fechaSeparadaanoFabricacion[0])
+                      let mesanoFabricacion = Number(fechaSeparadaanoFabricacion[1])
+                      let diaanoFabricacion = Number(fechaSeparadaanoFabricacion[2])
+                      let fecha_anoFabricacion = new Date( `${anoanoFabricacion}-${mesanoFabricacion}-${diaanoFabricacion}`)
+                      if (fechaActual > fecha_anoFabricacion ) {
+                          anoFabricacionExtintor.setAttribute('style', 'background-color: #FE001A;')
+                      }
+                      anoFabricacionExtintorCenterP.innerText = data[i].ano_fabric
+                    }                            
+                    anoFabricacionExtintorCenter.appendChild(anoFabricacionExtintorCenterP)
+                    anoFabricacionExtintor.appendChild(anoFabricacionExtintorCenter)
+                    fila.appendChild(anoFabricacionExtintor)
+                    //Carga vencido se pone en color #FE001A
+                    let cargaExtintor = document.createElement('td')                                                                                                                      
+                    let cargaExtintorCenter = document.createElement('center')                                
+                    let cargaExtintorCenterP = document.createElement('p')       
+                    if(!(data[i].fecha_carga == null)){
+                      let fechaSeparadaCarga = data[i].fecha_carga.split('/')
+                      let anoCarga = Number(fechaSeparadaCarga[0])
+                      let mesCarga = Number(fechaSeparadaCarga[1])
+                      let diaCarga = Number(fechaSeparadaCarga[2])
+                      let fecha_Carga = new Date(`${anoCarga}-${mesCarga}-${diaCarga}`)                                
+                      if (fechaActual > fecha_Carga) {
+                          cargaExtintor.setAttribute('style', 'background-color: #FE001A;')
+                      }     
+                      cargaExtintorCenterP.innerText = data[i].fecha_carga
+                    }                                                                                   
+                    cargaExtintorCenter.appendChild(cargaExtintorCenterP)
+                    cargaExtintor.appendChild(cargaExtintorCenter)
+                    fila.appendChild(cargaExtintor)
+                    // PH vencido se pone en color #FE001A
+                    let PHExtintor = document.createElement('td')                                                                                  
+                    let PHExtintorCenter = document.createElement('center')                                
+                    let PHExtintorCenterP = document.createElement('p')                                                                                    
+                    if(!(data[i].fecha_ph == null)){
+                      let fechaSeparadaPHExt = data[i].fecha_ph.split('/')
+                      let anoPHExt = Number(fechaSeparadaPHExt[0])
+                      let mesPHExt = Number(fechaSeparadaPHExt[1])
+                      let diaPHExt = Number(fechaSeparadaPHExt[2])
+                      let fecha_PHExt = new Date(`${anoPHExt}-${mesPHExt}-${diaPHExt}`)                                
+                      if (fechaActual > fecha_PHExt) {
+                          PHExtintor.setAttribute('style', 'background-color: #FE001A;')
+                      }
+                      PHExtintorCenterP.innerText = data[i].fecha_ph
+                    }
+                    PHExtintorCenter.appendChild(PHExtintorCenterP)
+                    PHExtintor.appendChild(PHExtintorCenter)
+                    fila.appendChild(PHExtintor)
+                    //recargador
+                    let recargadorExtintor = document.createElement('td')
+                    let recargadorExtintorCenter = document.createElement('center')                                
+                    let recargadorExtintorCenterP = document.createElement('p')                                                                
+                    recargadorExtintorCenterP.innerText = data[i].recargador
+                    recargadorExtintorCenter.appendChild(recargadorExtintorCenterP)
+                    recargadorExtintor.appendChild(recargadorExtintorCenter)
+                    fila.appendChild(recargadorExtintor)
+                    //telefono contacto
+                    let telContactoExtintor = document.createElement('td')
+                    let telContactoExtintorCenter = document.createElement('center')                                
+                    let telContactoExtintorCenterP = document.createElement('p')                                                                
+                    telContactoExtintorCenterP.innerText = data[i].tel_contacto
+                    telContactoExtintorCenter.appendChild(telContactoExtintorCenterP)
+                    telContactoExtintor.appendChild(telContactoExtintorCenter)
+                    fila.appendChild(telContactoExtintor)
+                    //correo
+                    let correoContactoExtintor = document.createElement('td')
+                    let correoContactoExtintorCenter = document.createElement('center')                                
+                    let correoContactoExtintorCenterP = document.createElement('p')                                                                
+                    correoContactoExtintorCenterP.innerText = data[i].email
+                    correoContactoExtintorCenter.appendChild(correoContactoExtintorCenterP)
+                    correoContactoExtintor.appendChild(correoContactoExtintorCenter)
+                    fila.appendChild(correoContactoExtintor)
+                    document.getElementById('tbody').appendChild(fila)
+                    //delete
+                    let deleteExtintor = document.createElement('td')
+                    let deleteExtintorCenter = document.createElement('center')                                
+                    let deleteExtintorCenterImg = document.createElement('img')        
+                    deleteExtintorCenterImg.setAttribute('onclick', `eliminarCampo("extintores", ${data[i].id})`)
+                    deleteExtintorCenterImg.setAttribute('src', `img/boton_cruz.png`)
+                    deleteExtintorCenterImg.setAttribute('width', `36px`)
+                    deleteExtintorCenter.appendChild(deleteExtintorCenterImg)
+                    deleteExtintor.appendChild(deleteExtintorCenter)
+                    fila.appendChild(deleteExtintor)
+                    document.getElementById('tbody').appendChild(fila)
+                }
+            })
+            $.getJSON(`${window.location.port}//${window.location.hostname}/api/mangueras?nroin=${nroin}`,(data) => {
+                for (let i = 0; i < data.length; i++) {                                         
+                    let fila = document.createElement('tr')
+                    fila.setAttribute('id',`manguera${data[i].id}`)
+                    //tipo elemento
+                    let tipoElemento = document.createElement('th')
+                    let tipoElementoCenter = document.createElement('center')
+                    tipoElementoCenter.setAttribute('class','tipoElemento')
+                    let tipoElementoCenterHref = document.createElement('a')
+                    tipoElementoCenterHref.setAttribute('href',`mangueraIN.html?idman=${data[i].id}&&nroin=${nroin}&&ventana=2`)
+                    tipoElementoCenterHref.innerText = "Manguera"
+                    tipoElementoCenter.appendChild(tipoElementoCenterHref)
+                    tipoElemento.appendChild(tipoElementoCenter)
+                    fila.appendChild(tipoElemento)                                                                                                         
+                    //alias extintor
+                    let aliasManguera = document.createElement('td')
+                    let aliasMangueraP = document.createElement('p')                                
+                    aliasManguera.appendChild(aliasMangueraP)
+                    aliasMangueraP.innerText = data[i].alias
+                    fila.appendChild(aliasManguera)            
+                    //fabricante
+                    let fabricanteManguera = document.createElement('td')
+                    let fabricanteMangueraCenter = document.createElement('center')                                
+                    let fabricanteMangueraCenterP = document.createElement('p')                                                                
+                    fabricanteMangueraCenterP.innerText = data[i].fabricante
+                    fabricanteMangueraCenter.appendChild(fabricanteMangueraCenterP)
+                    fabricanteManguera.appendChild(fabricanteMangueraCenter)
+                    fila.appendChild(fabricanteManguera)                                
+                    //numero serie
+                    let nroSerieManguera = document.createElement('td')
+                    let nroSerieMangueraCenter = document.createElement('center')                                
+                    let nroSerieMangueraCenterP = document.createElement('p')                                                                
+                    nroSerieMangueraCenterP.innerText = data[i].nro_serie
+                    nroSerieMangueraCenter.appendChild(nroSerieMangueraCenterP)
+                    nroSerieManguera.appendChild(nroSerieMangueraCenter)
+                    fila.appendChild(nroSerieManguera)
+                    //3campos vacios
+                    let campoVacioManguera1 = document.createElement('td')
+                    let campoVacioManguera1Center = document.createElement('center')                                
+                    let campoVacioManguera1CenterP = document.createElement('p')                                                                
+                    campoVacioManguera1Center.appendChild(campoVacioManguera1CenterP)
+                    campoVacioManguera1.appendChild(campoVacioManguera1Center)
+                    fila.appendChild(campoVacioManguera1)
+                    let campoVacioManguera2 = document.createElement('td')
+                    let campoVacioManguera2Center = document.createElement('center')                                
+                    let campoVacioManguera2CenterP = document.createElement('p')                                                                
+                    campoVacioManguera2Center.appendChild(campoVacioManguera2CenterP)
+                    campoVacioManguera2.appendChild(campoVacioManguera2Center)                                
+                    fila.appendChild(campoVacioManguera2)
+                    let campoVacioManguera3 = document.createElement('td')
+                    let campoVacioManguera3Center = document.createElement('center')                                
+                    let campoVacioManguera3CenterP = document.createElement('p')                                                                
+                    campoVacioManguera3Center.appendChild(campoVacioManguera3CenterP)
+                    campoVacioManguera3.appendChild(campoVacioManguera3Center)                                
+                    fila.appendChild(campoVacioManguera3)                                                                       
+                    //tipo
+                    let tipoManguera = document.createElement('td')
+                    let tipoMangueraCenter = document.createElement('center')                                
+                    let tipoMangueraCenterP = document.createElement('p')                                                                
+                    tipoMangueraCenterP.innerText = data[i].tipo
+                    tipoMangueraCenter.appendChild(tipoMangueraCenterP)
+                    tipoManguera.appendChild(tipoMangueraCenter)
+                    fila.appendChild(tipoManguera)                                
+                    
+                    //codigo Q
+                    let codigoQManguera = document.createElement('td')
+                    let codigoQMangueraCenter = document.createElement('center')                                
+                    let codigoQMangueraCenterP = document.createElement('p')                                                                
+                    codigoQMangueraCenterP.innerText = data[i].codigo_q
+                    codigoQMangueraCenter.appendChild(codigoQMangueraCenterP)
+                    codigoQManguera.appendChild(codigoQMangueraCenter)
+                    fila.appendChild(codigoQManguera)                            
+                    //Metros
+                    let metrosManguera = document.createElement('td')
+                    let metrosMangueraCenter = document.createElement('center')                                
+                    let metrosMangueraCenterP = document.createElement('p')                                                                
+                    metrosMangueraCenterP.innerText = data[i].metros
+                    metrosMangueraCenter.appendChild(metrosMangueraCenterP)
+                    metrosManguera.appendChild(metrosMangueraCenter)
+                    fila.appendChild(metrosManguera)
+                    
+                    //ubicacion
+                    let ubicacionManguera = document.createElement('td')
+                    let ubicacionMangueraCenter = document.createElement('center')                                
+                    let ubicacionMangueraCenterP = document.createElement('p')                                                                
+                    ubicacionMangueraCenterP.innerText = data[i].ubicacion
+                    ubicacionMangueraCenter.appendChild(ubicacionMangueraCenterP)
+                    ubicacionManguera.appendChild(ubicacionMangueraCenter)
+                    fila.appendChild(ubicacionManguera)
+                    //numero estacion
+                    let nroEstacionManguera = document.createElement('td')
+                    let nroEstacionMangueraCenter = document.createElement('center')                                
+                    let nroEstacionMangueraCenterP = document.createElement('p')                                                                
+                    nroEstacionMangueraCenterP.innerText = data[i].nro_estacion
+                    nroEstacionMangueraCenter.appendChild(nroEstacionMangueraCenterP)
+                    nroEstacionManguera.appendChild(nroEstacionMangueraCenter)
+                    fila.appendChild(nroEstacionManguera)
+                    //campo vacio
+                    let campoVacioManguera4 = document.createElement('td')
+                    let campoVacioManguera4Center = document.createElement('center')                                
+                    let campoVacioManguera4CenterP = document.createElement('p')                                                                
+                    campoVacioManguera4Center.appendChild(campoVacioManguera4CenterP)
+                    campoVacioManguera4.appendChild(campoVacioManguera4Center)                                
+                    fila.appendChild(campoVacioManguera4)                                                     
+                    //instalacion vencido se pone en color #FE001A
+                    let instalacionManguera = document.createElement('td')                                                                                  
+                    let instalacionMangueraCenter = document.createElement('center')                                
+                    let instalacionMangueraCenterP = document.createElement('p')                                                                                    
+                    if(!(data[i].fecha_instalacion == null)){
+                      let fechaSeparadaPHExt = data[i].fecha_instalacion.split('/')
+                      let anoPHExt = Number(fechaSeparadaPHExt[0])
+                      let mesPHExt = Number(fechaSeparadaPHExt[1])
+                      let diaPHExt = Number(fechaSeparadaPHExt[2])
+                      let fecha_PHExt = new Date(`${anoPHExt}-${mesPHExt}-${diaPHExt}`)                                
+                      if (fechaActual > fecha_PHExt) {
+                          instalacionManguera.setAttribute('style', 'background-color: #FE001A;')
+                      }
+                      instalacionMangueraCenterP.innerText = data[i].fecha_ph
+                    }
+                    instalacionMangueraCenter.appendChild(instalacionMangueraCenterP)
+                    instalacionManguera.appendChild(instalacionMangueraCenter)
+                    fila.appendChild(instalacionManguera)
+                    // PH vencido se pone en color #FE001A
+                    let PHManguera = document.createElement('td')                                                                                  
+                    let PHMangueraCenter = document.createElement('center')                                
+                    let PHMangueraCenterP = document.createElement('p')                                                                                    
+                    if(!(data[i].fecha_ph == null)){
+                      let fechaSeparadaPHExt = data[i].fecha_ph.split('/')
+                      let anoPHExt = Number(fechaSeparadaPHExt[0])
+                      let mesPHExt = Number(fechaSeparadaPHExt[1])
+                      let diaPHExt = Number(fechaSeparadaPHExt[2])
+                      let fecha_PHExt = new Date(`${anoPHExt}-${mesPHExt}-${diaPHExt}`)                                
+                      if (fechaActual > fecha_PHExt) {
+                          PHManguera.setAttribute('style', 'background-color: #FE001A;')
+                      }
+                      PHMangueraCenterP.innerText = data[i].fecha_ph
+                    }
+                    PHMangueraCenter.appendChild(PHMangueraCenterP)
+                    PHManguera.appendChild(PHMangueraCenter)
+                    fila.appendChild(PHManguera)                                                              
+                    //recargador
+                    let certificadorManguera = document.createElement('td')
+                    let certificadorMangueraCenter = document.createElement('center')                                
+                    let certificadorMangueraCenterP = document.createElement('p')                                                                
+                    certificadorMangueraCenterP.innerText = data[i].certificador
+                    certificadorMangueraCenter.appendChild(certificadorMangueraCenterP)
+                    certificadorManguera.appendChild(certificadorMangueraCenter)
+                    fila.appendChild(certificadorManguera)
+                    //telefono contacto
+                    let telContactoManguera = document.createElement('td')
+                    let telContactoMangueraCenter = document.createElement('center')                                
+                    let telContactoMangueraCenterP = document.createElement('p')                                                                
+                    telContactoMangueraCenterP.innerText = data[i].tel_contacto
+                    telContactoMangueraCenter.appendChild(telContactoMangueraCenterP)
+                    telContactoManguera.appendChild(telContactoMangueraCenter)
+                    fila.appendChild(telContactoManguera)
+                    //correo
+                    let correoContactoManguera = document.createElement('td')
+                    let correoContactoMangueraCenter = document.createElement('center')                                
+                    let correoContactoMangueraCenterP = document.createElement('p')                                                                
+                    correoContactoMangueraCenterP.innerText = data[i].email
+                    correoContactoMangueraCenter.appendChild(correoContactoMangueraCenterP)
+                    correoContactoManguera.appendChild(correoContactoMangueraCenter)
+                    fila.appendChild(correoContactoManguera)
+                    document.getElementById('tbody').appendChild(fila)
+                    //delete
+                    let deleteManguera = document.createElement('td')
+                    let deleteMangueraCenter = document.createElement('center')                                
+                    let deleteMangueraCenterImg = document.createElement('img')        
+                    deleteMangueraCenterImg.setAttribute('onclick', `eliminarCampo("mangueras", ${data[i].id})`)
+                    deleteMangueraCenterImg.setAttribute('src', `img/boton_cruz.png`)
+                    deleteMangueraCenterImg.setAttribute('width', `36px`)
+                    deleteMangueraCenter.appendChild(deleteMangueraCenterImg)
+                    deleteManguera.appendChild(deleteMangueraCenter)
+                    fila.appendChild(deleteManguera)
+                    document.getElementById('tbody').appendChild(fila)
+                }
+            })
+            </script>                        
+        </tbody>
+        </table>
+      </div>
+    </div>
+  </main>  
+  <footer id="footer">
+    <script>
+        crearBotonFooter(`extintoresINmenu.html`,'img/boton_cruz.png' )
+    </script>    
+</footer>
+</body>
+
+</html>

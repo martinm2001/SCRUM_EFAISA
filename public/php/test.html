@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="../img/iconohead.ico" />
+    <title>Extintores/Mangueras</title>
+    <link rel="stylesheet" href="../css/bootstrap.min.css" />
+    <script src="../scripts/jquery-3.5.0.min.js"></script>
+    <script src="../scripts/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" href="../css/style.css" />
+    <script src="../scripts/reloj.js"></script>
+    <script src="../scripts/barraestado.js"></script>
+  </head>
+
+  <body onload="reloj()">
+    <header>
+      <nav class="navbar navbar-default barraestado">
+        <div class="container-fluid" style="text-align: center; display: block">
+          <img
+            id="AlarmGralAct"
+            src="../img/campana_roja.png"
+            title="Alarma General, Activa"
+            class="img-fluid float-start tamano36"
+            style="display: none"
+          />
+          <img
+            id="AlarmGralInact"
+            src="../img/campana_gris.png"
+            title="Alarma General, Inactiva"
+            class="img-fluid float-start tamano36"
+            style="display: none"
+          />
+          <img
+            id="DescGral"
+            src="../img/desconexion.png"
+            title="Desconexion, Activa"
+            class="img-fluid float-start tamano36"
+            style="display: none"
+          />
+          <img
+            id="DerivTierraF"
+            src="../img/deriv_tierra.png"
+            title="Derivacion Tierra, Activa"
+            class="img-fluid float-start tamano36"
+            style="display: none"
+          />
+          <img
+            id="DerivTierra"
+            src="../img/deriv_tierra_inact.png"
+            title="Derivacion Tierra, Inactiva"
+            class="img-fluid float-start tamano36"
+            style="display: block"
+          />
+          <img
+            id="Extintor"
+            src="../img/extintor.png"
+            title="Extintor, Activa"
+            class="img-fluid float-start tamano36"
+            style="display: none"
+          />
+          <img
+            id="ExtintorOFF"
+            src="../img/extintorInac.png"
+            title="Extintor, Inctiva"
+            class="img-fluid float-start tamano36"
+            style="display: none"
+          />
+          <h1
+            id="NombreOrg"
+            title="Nombre Organizacion"
+            class="float-center nombreOrg"
+          ></h1>
+
+          <div id="reloj" class="float-end reloj"></div>
+          <img
+            id="bateria_falla"
+            src="../img/bateria_falla.png"
+            title="Bateria, Falla"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="bateria_25"
+            src="../img/bateria_25.png"
+            title="Bateria, 25"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="bateria_50"
+            src="../img/bateria_50.png"
+            title="Bateria, 50"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="bateria_75"
+            src="../img/bateria_75.png"
+            title="Bateria, 75"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="bateria_100"
+            src="../img/bateria_100.png"
+            title="Bateria, 100"
+            class="img-fluid float-end tamano36"
+            style="display: block"
+          />
+          <!--nivel acceso-->
+          <img
+            id="NicAcc0"
+            src="../img/candado_amarillo.png"
+            title="Nivel acceso, 0"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="NicAcc1"
+            src="../img/candado_abierto_verde_1.png"
+            title="Nivel acceso, 1"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="NicAcc2"
+            src="../img/candado_abierto_verde_2.png"
+            title="Nivel acceso, 2"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="falla220F"
+            src="../img/220_falla.png"
+            title="220, Falla"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="falla220"
+            src="../img/220_ok.png"
+            title="220, OK"
+            class="img-fluid float-end tamano36"
+            style="display: block"
+          />
+          <img
+            id="internetok"
+            src="../img/internet_ok.png"
+            title="Red, Conectado"
+            class="img-fluid float-end tamano36"
+            style="display: none"
+          />
+          <img
+            id="internetno"
+            src="../img/internet_no.png"
+            title="Red, Desconectado"
+            class="img-fluid float-end tamano36"
+            style="display: block"
+          />
+          <img
+            src="../img/muneEfaisa.png"
+            title="www.efaisa.com.ar"
+            class="img-fluid float-end tamano36"
+          />
+        </div>
+      </nav>
+    </header>
+    <main id="contprinc" class="contprinc contimg">
+      <nav class="navbar navbar-default letrasinfolinea">
+        <h3>
+          <u
+            >Extintores/Mangueras
+            <div id="nroindesc" style="display: contents">1</div>
+            :</u
+          >
+          ALGO
+        </h3>
+      </nav>
+      <div class="contenedorprinc infoIN" style="width: auto">
+        <div class="table-responsive" style="overflow-y: scroll; height: 100%">
+          <!--Table-->
+          <table class="table table-striped">
+            <!--Table head-->
+            <thead>
+              <tr>
+                <th><center><p>Elemento</p></center></th>
+                <th><p>Alias</p></th>
+                <th><p>Fabricante</p></th>
+                <th><p>Nro. Serie</p></th>
+                <th><p>Nro. IRAM</p></th>
+                <th><p>Nro. DPS</p></th>
+                <th><p>Nro. Control</p></th>
+                <th><p>Tipo</p></th>
+                <th><p>Codigo Q</p></th>
+                <th><p>Kg / Mts</p></th>
+                <th><p>Ubicacion</p></th>
+                <th><p>Nro. Estacion</p></th>
+                <th><p>Vencimiento Envase</p></th>
+                <th><p>Vencimiento Carga / Instalacion</p></th>
+                <th><p>Vencimiento P.H.</p></th>
+                <th><p>Recargador / Cetificador</p></th>
+                <th><p>Telefono</p></th>
+                <th><p>Correo</p></th>
+              </tr>
+            </thead>
+            <!--Table head-->
+
+            <!--Table body-->
+            <tbody>
+              <tr>
+                <th><p>Manguera</p></th>
+                <td><p>Es_una_maguera</p></td>
+                <td><p>Fabricante</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>un tipo de manquera</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>100Mts</p></td>
+                <td><p>01</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>Certificador</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>certificador@mail.com.ar</p></td>
+              </tr>
+              <tr>
+                <th><p>Manguera</p></th>
+                <td><p>Es_una_maguera</p></td>
+                <td><p>Fabricante</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>un tipo de manquera</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>100Mts</p></td>
+                <td><p>01</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>Certificador</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>certificador@mail.com.ar</p></td>
+              </tr>
+              <tr>
+                <th><p>Manguera</p></th>
+                <td><p>Es_una_maguera</p></td>
+                <td><p>Fabricante</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>un tipo de manquera</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>100Mts</p></td>
+                <td><p>01</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>Certificador</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>certificador@mail.com.ar</p></td>
+              </tr>
+              <tr>
+                <th><p>Manguera</p></th>
+                <td><p>Es_una_maguera</p></td>
+                <td><p>Fabricante</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>un tipo de manquera</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>100Mts</p></td>
+                <td><p>01</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>Certificador</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>certificador@mail.com.ar</p></td>
+              </tr>
+              <tr>
+                <th><p>Manguera</p></th>
+                <td><p>Es_una_maguera</p></td>
+                <td><p>Fabricante</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>un tipo de manquera</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>100Mts</p></td>
+                <td><p>01</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>Certificador</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>certificador@mail.com.ar</p></td>
+              </tr>
+              <tr>
+                <th><p>Manguera</p></th>
+                <td><p>Es_una_maguera</p></td>
+                <td><p>Fabricante</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>un tipo de manquera</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>100Mts</p></td>
+                <td><p>01</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>2020/12/31</p></td>
+                <td><p>Certificador</p></td>
+                <td><p>4558884524</p></td>
+                <td><p>certificador@mail.com.ar</p></td>
+              </tr>
+            </tbody>
+            <!--Table body-->
+          </table>
+          <!--Table-->
+        </div>
+      </div>
+    </main>
+    <footer>
+      <div class="footer py-2 float-end">
+        <a href="#" class="btn btn-light botonconfigen" role="button">
+          <img src="../img/plano_blanco.png" height="36px" width="36px" />
+        </a>
+      </div>
+      <div class="footer py-2 float-end">
+        <a href="#" class="btn btn-light botonconfigen" role="button">
+          <img src="../img/Imagen.png" height="36px" width="36px" />
+        </a>
+      </div>
+      <div class="footer py-2 float-end">
+        <a href="#" class="btn btn-light botonconfigen" role="button">
+          <img src="../img/camara_azul.png" height="36px" width="36px" />
+        </a>
+      </div>
+      <div class="footer py-2 float-end">
+        <a href="#" class="btn btn-light botonconfigen" role="button">
+          <img
+            src="../img/carpeta_azul_manual.png"
+            height="36px"
+            width="36px"
+          />
+        </a>
+      </div>
+      <div class="footer py-2 float-end">
+        <a href="#" class="btn btn-light botonconfigen" role="button">
+          <img src="../img/extintor.png" height="36px" width="36px" />
+        </a>
+      </div>
+      <div class="footer py-2 float-end">
+        <a href="#" class="btn btn-light botonconfigen" role="button">
+          <img src="../img/info.png" height="36px" width="36px" />
+        </a>
+      </div>
+      <div class="footer py-2 float-end">
+        <a
+          href="../index.html"
+          class="btn btn-light btn-light btn-outline-dark botonconfigen"
+          role="button"
+        >
+          <img src="../img/boton_cruz.png" height="36px" width="36px" />
+        </a>
+      </div>
+    </footer>
+  </body>
+</html>
