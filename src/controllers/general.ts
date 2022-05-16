@@ -1,10 +1,11 @@
 import mysql from "mysql";
+
 const connection = mysql.createConnection({
-        host: "127.0.0.1",
-        user: "efaisa",
-        password: "1q2w3e4r5t6y",
-        database: "interfaz",
-      });
+  host: "127.0.0.1",
+  user: "efaisa",
+  password: "1q2w3e4r5t6y",
+  database: "interfaz",
+});
 
 const getGeneral = (req: any, res: any) => {
   connection.query(
