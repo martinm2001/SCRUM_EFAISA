@@ -8,16 +8,9 @@ const dayjs = require("dayjs");
 
 const app = express();
 
-app.use(
-  cors({
-    origin: "*",
-  })
-);
-app.use(
-  express.urlencoded({
-    extended: false,
-  })
-);
+app.use(cors({origin: "*",}));
+app.use(express.urlencoded({extended: false,}));
+
 // parse json
 app.use(express.json());
 app.use(timeout("15s"));
