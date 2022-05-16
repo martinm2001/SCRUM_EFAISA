@@ -493,12 +493,11 @@
             return date;
         };
 
-        function ActilizarFondo(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12,in13) {
-            int13=0;
-            if ((in1 == valorNormal) && (in2 == valorNormal) && (in3 == valorNormal) && (in4 == valorNormal) && (in5 == valorNormal) && (in6 == valorNormal) && (in7 == valorNormal) && (in8 == valorNormal) && (in9 == valorNormal) && (in10 == valorNormal) && (in11 == valorNormal) && (in12 == valorNormal) && (in13 == valorNormal)) {
+        function ActilizarFondo(in1, in2, in3, in4, in5, in6, in7, in8, in9, in10, in11, in12) {
+            if ((in1 == valorNormal) && (in2 == valorNormal) && (in3 == valorNormal) && (in4 == valorNormal) && (in5 == valorNormal) && (in6 == valorNormal) && (in7 == valorNormal) && (in8 == valorNormal) && (in9 == valorNormal) && (in10 == valorNormal) && (in11 == valorNormal) && (in12 == valorNormal)) {
                 document.getElementById('tituloAlertas').style.display = 'none';
             }
-            if ((in1 == valorAlarma) || (in2 == valorAlarma) || (in3 == valorAlarma) || (in4 == valorAlarma) || (in5 == valorAlarma) || (in6 == valorAlarma) || (in7 == valorAlarma) || (in8 == valorAlarma) || (in9 == valorAlarma) || (in10 == valorAlarma) || (in11 == valorAlarma) || (in12 == valorAlarma) || (in13 == valorAlarma) || (estadosDispositivos == 'ALARMA')) {
+            if ((in1 == valorAlarma) || (in2 == valorAlarma) || (in3 == valorAlarma) || (in4 == valorAlarma) || (in5 == valorAlarma) || (in6 == valorAlarma) || (in7 == valorAlarma) || (in8 == valorAlarma) || (in9 == valorAlarma) || (in10 == valorAlarma) || (in11 == valorAlarma) || (in12 == valorAlarma) || (estadosDispositivos == 'ALARMA')) {
                 document.getElementById('tituloAlertas').style.display = 'block';
             }
         }
@@ -521,13 +520,10 @@
                                         )
                                     ) {
                                         crearDispositivo(data[i].Nro, data[i].Nombre, data[i].Estado, data[i].Tipo)
-                                        crearDispositivo(data[i].Nro, data[i].Nombre, data[i].Estado, data[i].Tipo)
                                     }
                                     if (data[i].Estado == 'ALARMA') {
                                         estadosDispositivos = 'ALARMA'
-                                        ActilizarFondo(localStorage.getItem('IN1'), localStorage.getItem('IN2'), localStorage.getItem('IN3'), localStorage.getItem('IN4'), localStorage.getItem('IN5'), localStorage.getItem('IN6'), localStorage.getItem('IN7'), localStorage.getItem('IN8'), localStorage.getItem('IN9'), localStorage.getItem('IN10'), localStorage.getItem('IN11'), localStorage.getItem('IN12'),localStorage.getItem('IN13'),)
-                                
-                                        ActilizarFondo(localStorage.getItem('IN1'), localStorage.getItem('IN2'), localStorage.getItem('IN3'), localStorage.getItem('IN4'), localStorage.getItem('IN5'), localStorage.getItem('IN6'), localStorage.getItem('IN7'), localStorage.getItem('IN8'), localStorage.getItem('IN9'), localStorage.getItem('IN10'), localStorage.getItem('IN11'), localStorage.getItem('IN12'),localStorage.getItem('IN13'),)
+                                        ActilizarFondo(localStorage.getItem('IN1'), localStorage.getItem('IN2'), localStorage.getItem('IN3'), localStorage.getItem('IN4'), localStorage.getItem('IN5'), localStorage.getItem('IN6'), localStorage.getItem('IN7'), localStorage.getItem('IN8'), localStorage.getItem('IN9'), localStorage.getItem('IN10'), localStorage.getItem('IN11'), localStorage.getItem('IN12'))
                                     }
                                 }
                             }
