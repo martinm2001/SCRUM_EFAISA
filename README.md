@@ -10,8 +10,9 @@
 7) unzip archivo.zip: Extraer un .zip en el directorio donde se trabaja
 8) tar -cpvf /Directorio/backup.tgz: Crear backup del proyecto (Directorio de SCRUM = /home/pi/)
 9) systemctl restart nginx: Reiniciar el servidor
-10) git pull: Actualizar proyecto desde GitHub al directorio
-11) sudo su: Permiso de root (NO USAR FUERA DE EFAISA)
+10) git clone (Link de GitHub) .git: Crear copia de GitHub en el directorio
+11) git pull: Actualizar proyecto desde GitHub al directorio
+12) sudo su: Permiso de root (NO USAR FUERA DE EFAISA)
 
 ## Directorios de relevancia:
 1) Directorio del proyecto: var/www/html/scrum
