@@ -1,13 +1,14 @@
 //Conexión con la base de datos via archivo conec
 import mysql from "mysql";
+const connection = require("./conec");
 
-const connection = mysql.createConnection({
+/*const connection = mysql.createConnection({
         host: "127.0.0.1",
         user: "efaisa",
         password: "1q2w3e4r5t6y",
         database: "interfaz",
       });
-
+*/
 
 const getControlAcceso = (req: any, res: any) => {
   connection.query(
