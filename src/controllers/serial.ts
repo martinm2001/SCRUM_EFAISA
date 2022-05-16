@@ -4,12 +4,10 @@ import serialPort from "serialport";
 import TelegramBot from "node-telegram-bot-api";
 const dayjs = require("dayjs");
 
-const connection = mysql.createConnection({
-  host: "127.0.0.1",
-  user: "efaisa",
-  password: "1q2w3e4r5t6y",
-  database: "interfaz",
-});
+const connection = require("./conec");
+    
+
+
 
 const { eventosManuales } = require("./eventos");
 
