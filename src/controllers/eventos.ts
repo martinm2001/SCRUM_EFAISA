@@ -1,13 +1,14 @@
+import mysql from "mysql";
+
+const connection = mysql.createConnection({
+  host: "127.0.0.1",
+  user: "efaisa",
+  password: "1q2w3e4r5t6y",
+  database: "interfaz",
+});
+
 let eventosManuales: number[] = [];
 
-//Conexión con la base de datos via archivo conec
-import mysql from "mysql";
-const connection = mysql.createConnection({
-        host: "127.0.0.1",
-        user: "efaisa",
-        password: "1q2w3e4r5t6y",
-        database: "interfaz",
-      });
 const getEventos = (req: any, res: any) => {
   if (req.query.id) {
     connection.query(
@@ -40,7 +41,7 @@ const postDesactEventoManual = (req: any, res: any) => {
   res.json({ status: "OK" });
 };
 
-const postEventos = (req, res,) => {
+const postEventos = (req: any, res: any) => {
   const { nombreEvento, entrada, tiempoin, salida, tiempoout } = req.body;
   connection.query(
     `INSERT INTO eventos (nombreEvento, entrada, tiempoin, salida, tiempoout) VALUES ('${nombreEvento}', ${entrada}, ${tiempoin}, ${salida}, ${tiempoout})`,
