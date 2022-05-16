@@ -14,7 +14,7 @@
 
     <script src="scripts/barraestado.js"></script>
     <script src="scripts/inicio.js"></script>
-    <script> aceptacion()</script>
+  
 </head>
 <script>
     const login = (redirect) => {
@@ -359,6 +359,8 @@
                 },
             })    
         }
+        aceptacion();
+
         function agregaBarraExt(id, nroin, aliasin, tipofalla) {
             if (!(document.getElementById(`ext${tipofalla}${id}`) === null)) {
                 document.getElementById(`ext${tipofalla}${id}`).remove()
